@@ -26,10 +26,6 @@ void analyser(char *fichier, int *resultat)
             switch (lexemeCourant.nature)
             {
             case ENTIER:
-                etat = E_ENTIER;
-                *resultat += lexemeCourant.valeur;
-                avancer();
-                break;
             case PARO:
                 etat = E_ENTIER;
                 *resultat += rec_eaep();
