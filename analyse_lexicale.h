@@ -23,6 +23,8 @@
       MUL,              // *
       DIV,              // /
       FIN_SEQUENCE,     // pseudo lexeme ajoute en fin de sequence
+      PARO,             // (
+      PARF,             // )
     } Nature_Lexeme ;
 
 

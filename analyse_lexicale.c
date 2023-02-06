@@ -140,6 +140,14 @@ void reconnaitre_lexeme() {
                                 lexeme_en_cours.nature = DIV;
                                 etat = E_FIN;
                                 break;
+                            case '(':
+                                lexeme_en_cours.nature = PARO;
+                                etat = E_FIN;
+                                break;
+                            case ')':
+                                lexeme_en_cours.nature = PARF;
+                                etat = E_FIN;
+                                break;
                             default:
                                 printf("Erreur_Lexicale");
                                 exit(0);
@@ -217,6 +225,8 @@ int est_symbole(char c) {
         case '-':
         case '*':
         case '/':
+        case '(':
+        case ')':
             return 1;
 
         default:
@@ -239,6 +249,10 @@ char *Nature_vers_Chaine(Nature_Lexeme nature) {
             return "MUL";
         case DIV:
             return "DIVISION";
+        case PARO:
+            return "PARO";
+        case PARF:
+            return "PARF";
         case FIN_SEQUENCE:
             return "FIN_SEQUENCE";
         default:
@@ -271,4 +285,3 @@ void afficher(Lexeme l) {
 }
 
 /* --------------------------------------------------------------------- */
-

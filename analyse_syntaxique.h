@@ -14,6 +14,10 @@ typedef enum {
 void analyser(char *fichier, int *resultat);
 
 int calcul(int ent1, char operation, int ent2);
+
+int rec_eaep();
+
+char rec_op();
 /*
 -- e.i : indifferent
 -- e.f : une Expression Arithmetique a ete lue dans fichier
