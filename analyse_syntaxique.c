@@ -4,10 +4,12 @@
 
 #include "stdlib.h"
 #include <stdio.h>
+#include "string.h"
 
 #include "analyse_syntaxique.h"
 #include "analyse_lexicale.h"
 #include "ast_parcours.h"
+#include "table.h"
 
 void analyser(char *fichier, Ast *arbre)
 {
@@ -15,7 +17,8 @@ void analyser(char *fichier, Ast *arbre)
     rec_seq_aff(arbre);
     if (lexeme_courant().nature == FIN_SEQUENCE)
     {
-        printf("Syntaxte correcte \n");
+        afficheTS();
+        printf("\nSyntaxte correcte \n");
     }
     else
     {
@@ -87,6 +90,8 @@ void rec_suite_seq_facteur(Ast *Ag, Ast *A)
 
 void rec_facteur(Ast *A)
 {
+    int v;
+    int trouve; // boolean
     switch (lexeme_courant().nature)
     {
     case ENTIER:
@@ -107,6 +112,16 @@ void rec_facteur(Ast *A)
         }
         break;
     case IDF:
+        trouve = estPresentTS(lexeme_courant().chaine, &v);
+        if (trouve)
+        {
+            *A = creer_valeur(v);
+        }
+        else
+        {
+            printf("Erreur : la variable %s est utilisée avant d'être initialisée \n", lexeme_courant().chaine);
+            exit(0);
+        }
         avancer();
         break;
     default:
@@ -115,40 +130,56 @@ void rec_facteur(Ast *A)
     }
 }
 
-void rec_seq_aff(){
+void rec_seq_aff()
+{
     switch (lexeme_courant().nature)
     {
-        case IDF:
-            rec_aff();
-            rec_seq_aff();
-            break;
-        default:
-            break;
+    case IDF:
+        rec_aff();
+        rec_seq_aff();
+        break;
+    default:
+        break;
     }
 }
 
-void rec_aff(){
+void rec_aff()
+{
     Ast A;
-    if(lexeme_courant().nature == IDF){
+    int v;
+    char idf[256];
+    if (lexeme_courant().nature == IDF)
+    {
+        strcpy(idf, lexeme_courant().chaine);
         avancer();
-    }else{
+    }
+    else
+    {
         printf("Erreur syntaxique \n");
         exit(0);
     }
-    if(lexeme_courant().nature == AFF){
+    if (lexeme_courant().nature == AFF)
+    {
+
         avancer();
-    }else{
+    }
+    else
+    {
         printf("Erreur syntaxique \n");
         exit(0);
     }
     rec_eag(&A);
-    if(lexeme_courant().nature == SEPAFF){
+    v = evaluation(A);
+    insererTS(idf, v);
+    if (lexeme_courant().nature == SEPAFF)
+    {
         avancer();
-    }else{
+    }
+    else
+    {
         printf("Erreur syntaxique \n");
         exit(0);
     }
-    
 }
 
 void op1(TypeOperateur *Op)
