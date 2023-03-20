@@ -83,7 +83,7 @@ void arreter() {
 
 void reconnaitre_lexeme() {
     typedef enum {
-        E_INIT, E_ENTIER, E_FIN
+        E_INIT, E_ENTIER, E_LETTRE, E_FIN
     } Etat_Automate;
     Etat_Automate etat = E_INIT;
 
@@ -119,6 +119,15 @@ void reconnaitre_lexeme() {
                         avancer_car();
                         break;
 
+                    case LETTRE:
+                        lexeme_en_cours.nature = IDF;
+                        lexeme_en_cours.ligne = numero_ligne();
+                        lexeme_en_cours.colonne = numero_colonne();
+                        ajouter_caractere(lexeme_en_cours.chaine, caractere_courant());
+                        etat = E_LETTRE;
+                        avancer_car();
+                        break;
+
                     case SYMBOLE:
                         lexeme_en_cours.ligne = numero_ligne();
                         lexeme_en_cours.colonne = numero_colonne();
@@ -148,13 +157,20 @@ void reconnaitre_lexeme() {
                                 lexeme_en_cours.nature = PARF;
                                 etat = E_FIN;
                                 break;
+                            case '=':
+                                lexeme_en_cours.nature = AFF;
+                                etat = E_FIN;
+                                break;
+                            case ';':
+                                lexeme_en_cours.nature = SEPAFF;
+                                etat = E_FIN;
+                                break;
                             default:
                                 printf("Erreur_Lexicale");
                                 exit(0);
                         };
                         avancer_car();
                         break;
-
                     default:
                         printf("Erreur_Lexicale\n");
                         exit(0);
@@ -173,7 +189,17 @@ void reconnaitre_lexeme() {
                     default:
                         etat = E_FIN;
                 };
+            case E_LETTRE:
+                switch (nature_caractere(caractere_courant())){
+                    case LETTRE:
+                        ajouter_caractere(lexeme_en_cours.chaine, caractere_courant());
+                        etat = E_LETTRE;
+                        avancer_car();
+                        break;
 
+                    default:
+                        etat = E_FIN;
+                }
             case E_FIN:  // etat final
                 break;
 
@@ -200,8 +226,18 @@ Nature_Caractere nature_caractere(char c) {
     if (fin_de_sequence_car(c)) return C_FIN_SEQUENCE;
     if (est_chiffre(c)) return CHIFFRE;
     if (est_symbole(c)) return SYMBOLE;
+    if(est_lettre(c)) return LETTRE;
     return ERREUR_CAR;
 }
+
+/* --------------------------------------------------------------------- */
+
+// vaut vrai ssi c designe un caractere lettre
+int est_lettre(char c){
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
+
+
 /* --------------------------------------------------------------------- */
 
 // vaut vrai ssi c designe un caractere separateur
@@ -227,6 +263,8 @@ int est_symbole(char c) {
         case '/':
         case '(':
         case ')':
+        case '=':
+        case ';':
             return 1;
 
         default:
@@ -255,6 +293,12 @@ char *Nature_vers_Chaine(Nature_Lexeme nature) {
             return "PARF";
         case FIN_SEQUENCE:
             return "FIN_SEQUENCE";
+        case IDF:
+            return "IDF";
+        case AFF:
+            return "AFF";
+        case SEPAFF:
+            return "SEPAFF";
         default:
             return "ERREUR";
     };

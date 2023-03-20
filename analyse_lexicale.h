@@ -12,8 +12,9 @@
    typedef enum {
 	  ERREUR_CAR,   // caractere incorrect
 	  CHIFFRE,			// chiffre 
-	  SYMBOLE,			// symbole,
-      C_FIN_SEQUENCE   // caractere de fin de sequence     
+	  SYMBOLE,			// symbole, (operateur arithmetique, parenthese, affectation, separateur d'instruction)
+     C_FIN_SEQUENCE,   // caractere de fin de sequence     
+     LETTRE,         // lettre (pour nom de variable)
    } Nature_Caractere ;
 
    typedef enum { 
@@ -25,6 +26,9 @@
       FIN_SEQUENCE,     // pseudo lexeme ajoute en fin de sequence
       PARO,             // (
       PARF,             // )
+      AFF,             // =
+      IDF,              // sequence de lettres
+      SEPAFF,           // ;
     } Nature_Lexeme ;
 
 
@@ -76,3 +80,5 @@
 Nature_Caractere nature_caractere(char c);
 
 int est_separateur(char c);
+
+int est_lettre(char c);
