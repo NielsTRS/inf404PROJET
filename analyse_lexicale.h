@@ -30,6 +30,9 @@
       IDF,              // sequence de lettres
       SEPAFF,           // ;
       TEST,
+      // mots clés du language
+      ECRIRE,           // ecrire
+      LIRE              // lire
     } Nature_Lexeme ;
 
 

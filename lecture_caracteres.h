@@ -1,5 +1,5 @@
 #ifndef __LEC_CAR__
-#define LEC_CAR__
+#define __LEC_CAR__
 
 /* ------------------------------------------------------------------------
 -- module lecture_caracteres

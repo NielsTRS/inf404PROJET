@@ -199,6 +199,12 @@ void reconnaitre_lexeme() {
                         break;
 
                     default:
+                        if(strcmp(lexeme_en_cours.chaine, "ecrire") == 0){
+                            lexeme_en_cours.nature = ECRIRE;
+                        }
+                        if(strcmp(lexeme_en_cours.chaine, "lire") == 0){
+                            lexeme_en_cours.nature = LIRE;
+                        }
                         etat = E_FIN;
                 }
             case E_FIN:  // etat final
@@ -300,6 +306,10 @@ char *Nature_vers_Chaine(Nature_Lexeme nature) {
             return "AFF";
         case SEPAFF:
             return "SEPAFF";
+        case LIRE:
+            return "LIRE";
+        case ECRIRE:
+            return "ECRIRE";
         default:
             return "ERREUR";
     };
