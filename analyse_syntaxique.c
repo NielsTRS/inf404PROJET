@@ -7,114 +7,144 @@
 
 #include "analyse_syntaxique.h"
 #include "analyse_lexicale.h"
+#include "ast_parcours.h"
 
-void analyser(char *fichier, int *resultat)
+void analyser(char *fichier, Ast *arbre)
 {
-    Etat_Automate etat = E_INIT;
-
-    // demarrage
     demarrer(fichier);
-    Lexeme lexemeCourant;
-
-    char operation;
-    while (!fin_de_sequence())
+    rec_eag(arbre);
+    if (lexeme_courant().nature == FIN_SEQUENCE)
     {
-        lexemeCourant = lexeme_courant();
-        switch (etat)
-        {
-        case E_INIT:
-            switch (lexemeCourant.nature)
-            {
-            case ENTIER:
-            case PARO:
-                etat = E_ENTIER;
-                *resultat += rec_eaep();
-                break;
-            default:
-                printf("Erreur syntaxique 1  \n");
-                exit(0);
-            }
-            break;
-        case E_ENTIER:
-            switch (lexemeCourant.nature)
-            {
-            case PLUS:
-                etat = E_SYM;
-                avancer();
-                break;
-            case MOINS:
-                etat = E_SYM;
-                avancer();
-                break;
-            case DIV:
-                etat = E_SYM;
-                avancer();
-                break;
-            case MUL:
-                etat = E_SYM;
-                avancer();
-                break;
-            default:
-                printf("Erreur syntaxique 2 \n");
-                exit(0);
-            }
-            operation = lexemeCourant.chaine[0];
-            break;
-        case E_SYM:
-            switch (lexemeCourant.nature)
-            {
-            case ENTIER:
-                etat = E_ENTIER;
-                *resultat = calcul(*resultat, operation, lexemeCourant.valeur);
-                avancer();
-                break;
-            case PARO:
-                etat = E_ENTIER;
-                *resultat = calcul(*resultat, operation, rec_eaep());
-                break;
-            default:
-                printf("Erreur syntaxique 3 \n");
-                exit(0);
-            }
-            break;
-        }
+        printf("Syntaxte correcte \n");
     }
-    switch (etat)
+    else
     {
-    case E_ENTIER:
-        printf("Syntaxe correcte \n");
+        printf("Erreur syntaxique \n");
+        exit(0);
+    }
+}
+void rec_eag(Ast *A)
+{
+    rec_seq_terme(A);
+}
+
+void rec_seq_terme(Ast *A)
+{
+    Ast A1;
+    rec_terme(&A1);
+    rec_suite_seq_terme(&A1, A);
+}
+
+void rec_suite_seq_terme(Ast *Ag, Ast *A)
+{
+    Ast Ad, A1;
+    TypeOperateur op;
+    switch (lexeme_courant().nature)
+    {
+    case PLUS:
+    case MOINS:
+        op1(&op);
+        rec_terme(&Ad);
+        A1 = creer_operation(op, *Ag, Ad);
+        rec_suite_seq_terme(&A1, A);
         break;
     default:
-        printf("Erreur syntaxique 4 \n");
+        *A = *Ag;
         break;
     }
 }
 
-int rec_eaep()
+void rec_terme(Ast *A)
+{
+    rec_seq_facteur(A);
+}
+
+void rec_seq_facteur(Ast *A)
+{
+    Ast A1;
+    rec_facteur(&A1);
+    rec_suite_seq_facteur(&A1, A);
+}
+
+void rec_suite_seq_facteur(Ast *Ag, Ast *A)
+{
+    Ast Ad, A1;
+    TypeOperateur op;
+    switch (lexeme_courant().nature)
+    {
+    case MUL:
+    case DIV:
+        op2(&op);
+        rec_facteur(&Ad);
+        A1 = creer_operation(op, *Ag, Ad);
+        rec_suite_seq_facteur(&A1, A);
+        break;
+    default:
+        *A = *Ag;
+        break;
+    }
+}
+
+void rec_facteur(Ast *A)
 {
     switch (lexeme_courant().nature)
     {
     case ENTIER:
+        *A = creer_valeur(lexeme_courant().valeur);
         avancer();
-        return lexeme_courant().valeur;
+        break;
     case PARO:
         avancer();
-        int a = rec_eaep();
-        char op = rec_op();
-        int b = rec_eaep();
+        rec_eag(A);
         if (lexeme_courant().nature == PARF)
         {
             avancer();
-            return calcul(a, op, b);
         }
         else
         {
             printf("Erreur syntaxique \n");
             exit(0);
         }
+        break;
     default:
         printf("Erreur syntaxique \n");
         exit(0);
+    }
+}
+
+void op1(TypeOperateur *Op)
+{
+    switch (lexeme_courant().nature)
+    {
+    case PLUS:
+        *Op = N_PLUS;
+        avancer();
+        break;
+    case MOINS:
+        *Op = N_MOINS;
+        avancer();
+        break;
+    default:
+        printf("Erreur syntaxique \n");
+        break;
+    }
+}
+
+void op2(TypeOperateur *Op)
+{
+    switch (lexeme_courant().nature)
+    {
+    case MUL:
+        *Op = N_MUL;
+        avancer();
+        break;
+    case DIV:
+        *Op = N_DIV;
+        avancer();
+        break;
+    default:
+        break;
+        printf("Erreur syntaxique \n");
     }
 }
 
@@ -135,7 +165,7 @@ char rec_op()
         avancer();
         return '/';
     default:
-        printf("Erreur syntaxique \n");
+        printf("Erreur syntaxique\n");
         exit(0);
     }
 }

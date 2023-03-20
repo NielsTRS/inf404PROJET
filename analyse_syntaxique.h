@@ -5,17 +5,40 @@
 #ifndef INF404_ANALYSE_SYNTAXIQUE_H
 #define INF404_ANALYSE_SYNTAXIQUE_H
 
-#endif //INF404_ANALYSE_SYNTAXIQUE_H
+#endif // INF404_ANALYSE_SYNTAXIQUE_H
 
-typedef enum {
-    E_INIT, E_ENTIER, E_SYM
+#include "type_ast.h"
+#include "ast_construction.h"
+typedef enum
+{
+    E_INIT,
+    E_ENTIER,
+    E_SYM
 } Etat_Automate;
 
-void analyser(char *fichier, int *resultat);
+void analyser(char *fichier, Ast *arbre);
 
 int calcul(int ent1, char operation, int ent2);
 
-int rec_eaep();
+void rec_eag(Ast *A);
+
+void rec_suite_seq_terme(Ast *Ad, Ast *A);
+
+void rec_seq_terme(Ast *A);
+
+void rec_terme(Ast *A);
+
+void rec_seq_facteur(Ast *A);
+
+void rec_suite_seq_facteur(Ast *Ag, Ast *A);
+
+void rec_facteur(Ast *A);
+
+void op1(TypeOperateur *Op);
+
+void op2(TypeOperateur *Op);
+
+
 
 char rec_op();
 /*
