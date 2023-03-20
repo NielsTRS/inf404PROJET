@@ -34,6 +34,10 @@ void rec_suite_seq_facteur(Ast *Ag, Ast *A);
 
 void rec_facteur(Ast *A);
 
+void rec_seq_aff();
+
+void rec_aff();
+
 void op1(TypeOperateur *Op);
 
 void op2(TypeOperateur *Op);

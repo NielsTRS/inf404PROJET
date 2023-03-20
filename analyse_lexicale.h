@@ -29,6 +29,7 @@
       AFF,             // =
       IDF,              // sequence de lettres
       SEPAFF,           // ;
+      TEST,
     } Nature_Lexeme ;
 
 

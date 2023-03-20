@@ -15,10 +15,10 @@ int main(int argc, char *argv[])
     if (argc == 2)
     {
         analyser(argv[1], &arbre);
-        printf("L'arbre est :");
-        afficherArbre(arbre);
+/*         printf("L'arbre est :");
+        afficherArbre(arbre); */
         
-        printf("\n Le résultat est : %d\n", evaluation(arbre));
+   /*      printf("\n Le résultat est : %d\n", evaluation(arbre)); */
     }
     else
     {

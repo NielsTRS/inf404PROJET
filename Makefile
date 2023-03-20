@@ -35,7 +35,7 @@ essai_ast: ast_construction.o  ast_parcours.o  essai_ast.o
 test_lexeme: analyse_lexicale.o  lecture_caracteres.o  test_lexeme.o
 	gcc -g -Wall -o test_lexeme analyse_lexicale.o  lecture_caracteres.o  test_lexeme.o
 
-calculette: calculette.o analyse_syntaxique.o  ast_parcours.o ast_construction.o
+calculette: calculette.o analyse_syntaxique.o  ast_parcours.o ast_construction.o analyse_lexicale.o lecture_caracteres.o
 	gcc -g -Wall -o calculette analyse_lexicale.o lecture_caracteres.o analyse_syntaxique.o calculette.o ast_parcours.o ast_construction.o
 
 

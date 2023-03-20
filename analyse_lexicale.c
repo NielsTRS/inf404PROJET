@@ -99,7 +99,8 @@ void reconnaitre_lexeme() {
     while (etat != E_FIN) {
 
         switch (etat) {
-
+            printf("%c", caractere_courant());
+            printf("helllllllllo");
             case E_INIT: // etat initial
 
                 switch (nature_caractere(caractere_courant())) {
@@ -226,7 +227,7 @@ Nature_Caractere nature_caractere(char c) {
     if (fin_de_sequence_car(c)) return C_FIN_SEQUENCE;
     if (est_chiffre(c)) return CHIFFRE;
     if (est_symbole(c)) return SYMBOLE;
-    if(est_lettre(c)) return LETTRE;
+    if (est_lettre(c)) return LETTRE;
     return ERREUR_CAR;
 }
 

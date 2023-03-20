@@ -12,14 +12,14 @@
 void analyser(char *fichier, Ast *arbre)
 {
     demarrer(fichier);
-    rec_eag(arbre);
+    rec_seq_aff(arbre);
     if (lexeme_courant().nature == FIN_SEQUENCE)
     {
         printf("Syntaxte correcte \n");
     }
     else
     {
-        printf("Erreur syntaxique \n");
+        printf("Erreur syntaxique 1 \n");
         exit(0);
     }
 }
@@ -102,14 +102,53 @@ void rec_facteur(Ast *A)
         }
         else
         {
-            printf("Erreur syntaxique \n");
+            printf("Erreur syntaxique 2 \n");
             exit(0);
         }
         break;
+    case IDF:
+        avancer();
+        break;
     default:
+        printf("Erreur syntaxique 3 \n");
+        exit(0);
+    }
+}
+
+void rec_seq_aff(){
+    switch (lexeme_courant().nature)
+    {
+        case IDF:
+            rec_aff();
+            rec_seq_aff();
+            break;
+        default:
+            break;
+    }
+}
+
+void rec_aff(){
+    Ast A;
+    if(lexeme_courant().nature == IDF){
+        avancer();
+    }else{
         printf("Erreur syntaxique \n");
         exit(0);
     }
+    if(lexeme_courant().nature == AFF){
+        avancer();
+    }else{
+        printf("Erreur syntaxique \n");
+        exit(0);
+    }
+    rec_eag(&A);
+    if(lexeme_courant().nature == SEPAFF){
+        avancer();
+    }else{
+        printf("Erreur syntaxique \n");
+        exit(0);
+    }
+    
 }
 
 void op1(TypeOperateur *Op)
@@ -125,7 +164,7 @@ void op1(TypeOperateur *Op)
         avancer();
         break;
     default:
-        printf("Erreur syntaxique \n");
+        printf("Erreur syntaxique 6 \n");
         break;
     }
 }
@@ -144,7 +183,7 @@ void op2(TypeOperateur *Op)
         break;
     default:
         break;
-        printf("Erreur syntaxique \n");
+        printf("Erreur syntaxique 7 \n");
     }
 }
 
@@ -165,7 +204,7 @@ char rec_op()
         avancer();
         return '/';
     default:
-        printf("Erreur syntaxique\n");
+        printf("Erreur syntaxique 8\n");
         exit(0);
     }
 }
