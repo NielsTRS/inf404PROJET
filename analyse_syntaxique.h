@@ -18,6 +18,8 @@ typedef enum
 
 void analyser(char *fichier, Ast *arbre);
 
+void pgm(Ast *A);
+
 int calcul(int ent1, char operation, int ent2);
 
 void rec_eag(Ast *A);
@@ -34,9 +36,11 @@ void rec_suite_seq_facteur(Ast *Ag, Ast *A);
 
 void rec_facteur(Ast *A);
 
-void rec_seq_aff();
+void rec_seq_inst(Ast *A);
 
-void rec_aff();
+void rec_suite_seq_inst(Ast *A1, Ast *A);
+
+void rec_inst(Ast *A);
 
 void op1(TypeOperateur *Op);
 

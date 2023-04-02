@@ -20,6 +20,9 @@
 #include "lecture_caracteres.h"
 #include "analyse_lexicale.h"
 
+#define NB_MOTCLE 2
+char motCle[2][20] = {"lire", "ecrire"};
+
 /* --------------------------------------------------------------------- */
 
 
@@ -199,11 +202,20 @@ void reconnaitre_lexeme() {
                         break;
 
                     default:
-                        if(strcmp(lexeme_en_cours.chaine, "ecrire") == 0){
-                            lexeme_en_cours.nature = ECRIRE;
-                        }
-                        if(strcmp(lexeme_en_cours.chaine, "lire") == 0){
-                            lexeme_en_cours.nature = LIRE;
+                        for(int i = 0; i < NB_MOTCLE; i++){
+                            if(strcmp(lexeme_en_cours.chaine, motCle[i]) == 0){
+                                switch (i)
+                                {
+                                case 0:
+                                    lexeme_en_cours.nature = LIRE;
+                                    break;
+                                case 1:
+                                    lexeme_en_cours.nature = ECRIRE;
+                                    break;
+                                default:
+                                    break;
+                                }
+                            }
                         }
                         etat = E_FIN;
                 }

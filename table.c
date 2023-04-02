@@ -33,3 +33,4 @@ void insererTS(char *idf, int v){
     TS[NbSymb].valeur = v;
     NbSymb++;
 }
+

@@ -8,6 +8,7 @@
 #include "analyse_syntaxique.h"
 #include "analyse_lexicale.h"
 #include "ast_parcours.h"
+#include "table.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,10 +16,12 @@ int main(int argc, char *argv[])
     if (argc == 2)
     {
         analyser(argv[1], &arbre);
-/*         printf("L'arbre est :");
-        afficherArbre(arbre); */
-        
-   /*      printf("\n Le résultat est : %d\n", evaluation(arbre)); */
+        printf("L'arbre est :");
+        afficherArbre(arbre);
+        printf("\n");
+        initTS();
+        interpreter(arbre);
+        afficheTS();
     }
     else
     {
