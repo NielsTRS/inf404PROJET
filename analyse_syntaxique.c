@@ -283,7 +283,6 @@ void rec_condition(Ast *A){
 }
 
 void operationIf(TypeOperateur *Op){
-    printf("CHAINE : %s", lexeme_courant().chaine);
     if(strcmp(lexeme_courant().chaine, "<") == 0){
         *Op = N_INF;
     }else if(strcmp(lexeme_courant().chaine, ">") == 0){
