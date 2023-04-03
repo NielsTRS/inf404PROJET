@@ -268,6 +268,29 @@ void rec_inst(Ast *A)
 }
 
 void rec_condition(Ast *A){
+    Ast A1;
+    rec_seq_condition(&A1);
+    rec_suite_seq_condition(&A1, A);
+}
+
+void rec_suite_seq_condition(Ast *A1, Ast *A){
+    Ast A2;
+    TypeOperateur op;
+    switch (lexeme_courant().nature)
+    {
+    case OPBOOL:
+        BoolIf(&op);
+        avancer();
+        rec_seq_condition(&A2);
+        *A = creer_bool(op, A1, &A2);
+        break;
+    default:
+        *A = *A1;
+        break;
+    }
+}
+
+void rec_seq_condition(Ast *A){
     Ast Ag, Ad;
     TypeOperateur op;
     rec_eag(&Ag);
@@ -280,6 +303,18 @@ void rec_condition(Ast *A){
     }
     rec_eag(&Ad);
     *A = creer_operation(op, Ag, Ad);
+}
+
+void BoolIf(TypeOperateur *Op){
+    printf("Chaine : %s", lexeme_courant().chaine);
+    if(strcmp(lexeme_courant().chaine, "&&") == 0){
+        *Op = N_ET;
+    }else if(strcmp(lexeme_courant().chaine, "||") == 0){
+        *Op = N_OU;
+    }else{
+        printf("Erreur syntaxique 14 \n");
+        exit(0);
+    }
 }
 
 void operationIf(TypeOperateur *Op){

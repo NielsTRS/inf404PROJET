@@ -37,7 +37,8 @@
       THEN,
       ELSE,
       FI,
-      OPCOMP
+      OPCOMP,
+      OPBOOL,
     } Nature_Lexeme ;
 
 

@@ -6,3 +6,4 @@ Nous avons renommé la fonction "afficher" du paquetag arbres en "afficherArbre"
 Entree 1 : TP5
 Entree 2 : TP6
 Entree 3 : TP7
+Entree 4 : TP7 + && et ||

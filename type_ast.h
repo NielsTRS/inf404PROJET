@@ -16,6 +16,7 @@ typedef enum
 	N_DIVI,
 	N_SUB,
 	N_IF,
+	N_BOOL,
 } TypeAst;
 typedef enum
 {
@@ -29,6 +30,8 @@ typedef enum
 	N_INFEGAL,		// <=
 	N_DIFF, 		// !=
 	N_EGAL, 		// ==
+	N_OU,			// ||
+	N_ET,			// &&
 } TypeOperateur;
 
 typedef struct noeud

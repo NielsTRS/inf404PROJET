@@ -16,6 +16,8 @@ Ast creer_seqinst(Ast *A1, Ast *A2);
 
 Ast creer_idf(char *idf);
 
+Ast creer_bool(TypeOperateur op, Ast *A1, Ast *A2);
+
 Ast creer_aff(Ast A1, Ast A2);
 
 Ast creer_lire(Ast A1);

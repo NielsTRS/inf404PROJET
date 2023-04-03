@@ -37,6 +37,16 @@ Ast creer_seqinst(Ast *A1, Ast *A2){
       return expr;
 }
 
+Ast creer_bool(TypeOperateur op, Ast *A1, Ast *A2){
+      Ast expr;
+      expr = (Ast) malloc (sizeof(NoeudAst));
+      expr->nature = N_BOOL;
+      expr->operateur = op;
+      expr->gauche = *A1;
+      expr->droite = *A2;
+      return expr;
+}
+
 Ast creer_idf(char *idf){
       Ast expr;
       expr = (Ast) malloc (sizeof(NoeudAst));

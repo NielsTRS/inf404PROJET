@@ -218,6 +218,34 @@ void reconnaitre_lexeme()
                         printf("Erreur_Lexicale");
                         exit(0);
                     }
+                    case '&':
+                    avancer_car();
+                    if (caractere_courant() == '&')
+                    {
+                        lexeme_en_cours.nature = OPBOOL;
+                        ajouter_caractere(lexeme_en_cours.chaine, caractere_courant());
+                        etat = E_FIN;
+                    }
+                    else
+                    {
+                        lexeme_en_cours.nature = AFF;
+                        etat = E_FIN;
+                    }
+                    break;
+                    case '|':
+                    avancer_car();
+                    if (caractere_courant() == '|')
+                    {
+                        lexeme_en_cours.nature = OPBOOL;
+                        ajouter_caractere(lexeme_en_cours.chaine, caractere_courant());
+                        etat = E_FIN;
+                    }
+                    else
+                    {
+                        lexeme_en_cours.nature = AFF;
+                        etat = E_FIN;
+                    }
+                    break;
                 default:
                     printf("Erreur_Lexicale");
                     exit(0);
@@ -391,6 +419,8 @@ int est_symbole(char c)
     case '<':
     case '>':
     case '!':
+    case '&':
+    case '|':
         return 1;
 
     default:
@@ -441,6 +471,8 @@ char *Nature_vers_Chaine(Nature_Lexeme nature)
         return "FI";
     case OPCOMP:
         return "OPCOMP";
+    case OPBOOL:
+        return "OPBOOL";
     default:
         return "ERREUR";
     };

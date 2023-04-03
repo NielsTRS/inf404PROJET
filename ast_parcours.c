@@ -40,6 +40,12 @@ void aff_operateur(TypeOperateur op)
 	case N_EGAL:
 		printf(" == ");
 		break;
+	case N_OU:
+		printf(" || ");
+		break;
+	case N_ET:
+		printf(" && ");
+		break;
 	}
 }
 
@@ -156,6 +162,27 @@ void afficherArbre(Ast expr)
 		}
 		printf(")");
 		break;
+	case N_BOOL:
+		printf("BOOL(");
+		if (expr->gauche != NULL)
+		{
+			afficherArbre(expr->gauche);
+		}
+		else
+		{
+			printf("souci bool");
+		}
+		aff_operateur(expr->operateur);
+		if (expr->droite != NULL)
+		{
+			afficherArbre(expr->droite);
+		}
+		else
+		{
+			printf("souci bool");
+		}
+		printf(")");
+		break;
 	default:
 		printf("Error 1");
 		break;
@@ -199,6 +226,18 @@ int evaluation(Ast expr)
 	case N_IDF:
 		estPresentTS(expr->chaine, &v);
 		return v;
+
+	case N_BOOL:
+		switch (expr->operateur)
+		{
+		case N_ET:
+			return evaluation(expr->gauche) && evaluation(expr->droite);
+		case N_OU:
+			return evaluation(expr->gauche) || evaluation(expr->droite);
+		default:
+			printf("Error 2");
+			exit(0);
+		}
 	default:
 		printf("Error 3");
 		exit(0);

@@ -44,6 +44,12 @@ void rec_inst(Ast *A);
 
 void rec_condition(Ast *A);
 
+void rec_suite_seq_condition(Ast *A1, Ast *A);
+
+void rec_seq_condition(Ast *A);
+
+void BoolIf(TypeOperateur *Op);
+
 void operationIf(TypeOperateur *Op);
 
 void op1(TypeOperateur *Op);
