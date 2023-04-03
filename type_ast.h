@@ -15,13 +15,20 @@ typedef enum
 	N_MULT,
 	N_DIVI,
 	N_SUB,
+	N_IF,
 } TypeAst;
 typedef enum
 {
 	N_PLUS,
 	N_MUL,
 	N_MOINS,
-	N_DIV
+	N_DIV,
+	N_SUP, 			// >
+	N_SUPEGAL,		// >=
+	N_INF,			// <
+	N_INFEGAL,		// <=
+	N_DIFF, 		// !=
+	N_EGAL, 		// ==
 } TypeOperateur;
 
 typedef struct noeud
@@ -29,7 +36,7 @@ typedef struct noeud
 	TypeAst nature;
 	TypeOperateur operateur;
 	char chaine[100];
-	struct noeud *gauche, *droite;
+	struct noeud *gauche, *droite, *milieu;
 	int valeur;
 } NoeudAst;
 

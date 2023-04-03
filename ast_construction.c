@@ -69,3 +69,14 @@ Ast creer_aff(Ast A1, Ast A2){
       expr->droite = A2;
       return expr;
 }
+
+Ast creer_if(Ast A1, Ast A2, Ast A3){
+      Ast expr;
+      expr = (Ast) malloc (sizeof(NoeudAst));
+      expr->nature = N_IF;
+      expr->gauche = A1;
+      expr->milieu = A2;
+      expr->droite = A3;
+      return expr;
+}
+

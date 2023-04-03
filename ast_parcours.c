@@ -22,6 +22,24 @@ void aff_operateur(TypeOperateur op)
 	case N_DIV:
 		printf("/");
 		break;
+	case N_SUP:
+		printf(" > ");
+		break;
+	case N_INF:
+		printf(" < ");
+		break;
+	case N_SUPEGAL:
+		printf(" >= ");
+		break;
+	case N_INFEGAL:
+		printf(" <= ");
+		break;
+	case N_DIFF:
+		printf(" != ");
+		break;
+	case N_EGAL:
+		printf(" == ");
+		break;
 	}
 }
 
@@ -29,6 +47,36 @@ void afficherArbre(Ast expr)
 {
 	switch (expr->nature)
 	{
+	case N_IF:
+		printf("IF(");
+		if (expr->gauche != NULL)
+		{
+			afficherArbre(expr->gauche);
+		}
+		else
+		{
+			printf("souci if gauche");
+		}
+		printf(",");
+		if (expr->milieu != NULL)
+		{
+			afficherArbre(expr->milieu);
+		}
+		else
+		{
+			printf("souci if milieu");
+		}
+		printf(",");
+		if (expr->droite != NULL)
+		{
+			afficherArbre(expr->droite);
+		}
+		else
+		{
+			printf("souci if droite");
+		}
+		printf(")");
+		break;
 	case OPERATION:
 		printf("(");
 		afficherArbre(expr->gauche);
@@ -109,7 +157,7 @@ void afficherArbre(Ast expr)
 		printf(")");
 		break;
 	default:
-		printf("Error");
+		printf("Error 1");
 		break;
 	}
 }
@@ -130,6 +178,21 @@ int evaluation(Ast expr)
 			return evaluation(expr->gauche) * evaluation(expr->droite);
 		case N_DIV:
 			return evaluation(expr->gauche) / evaluation(expr->droite);
+		case N_SUP:
+			return evaluation(expr->gauche) > evaluation(expr->droite);
+		case N_INF:
+			return evaluation(expr->gauche) < evaluation(expr->droite);
+		case N_SUPEGAL:
+			return evaluation(expr->gauche) >= evaluation(expr->droite);
+		case N_INFEGAL:
+			return evaluation(expr->gauche) <= evaluation(expr->droite);
+		case N_DIFF:
+			return evaluation(expr->gauche) != evaluation(expr->droite);
+		case N_EGAL:
+			return evaluation(expr->gauche) == evaluation(expr->droite);
+		default:
+			printf("Error 2");
+			exit(0);
 		}
 	case VALEUR:
 		return expr->valeur;
@@ -137,7 +200,7 @@ int evaluation(Ast expr)
 		estPresentTS(expr->chaine, &v);
 		return v;
 	default:
-		printf("Error");
+		printf("Error 3");
 		exit(0);
 	}
 }
@@ -159,8 +222,18 @@ void interpreter(Ast A)
 	case N_ECRIRE:
 		interpreter_ecrire(A);
 		break;
+	case N_IF:
+		if (evaluation(A->gauche))
+		{
+			interpreter(A->milieu);
+		}
+		else
+		{
+			interpreter(A->droite);
+		}
+		break;
 	default:
-		printf("Error");
+		printf("Error 4");
 		exit(0);
 	}
 }

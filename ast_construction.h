@@ -22,4 +22,6 @@ Ast creer_lire(Ast A1);
 
 Ast creer_ecrire(Ast A1);
 
+Ast creer_if(Ast A1, Ast A2, Ast A3);
+
 #endif

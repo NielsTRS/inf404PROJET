@@ -10,7 +10,6 @@
 #include "analyse_lexicale.h"
 #include "ast_parcours.h"
 
-
 void analyser(char *fichier, Ast *arbre)
 {
     demarrer(fichier);
@@ -127,8 +126,8 @@ void rec_facteur(Ast *A)
 void rec_seq_inst(Ast *A)
 {
     Ast A1;
-        rec_inst(&A1);
-        rec_suite_seq_inst(&A1, A);
+    rec_inst(&A1);
+    rec_suite_seq_inst(&A1, A);
 }
 
 void rec_suite_seq_inst(Ast *A1, Ast *A)
@@ -138,7 +137,7 @@ void rec_suite_seq_inst(Ast *A1, Ast *A)
     {
     case SEPAFF:
         avancer();
-        if(lexeme_courant().nature == FIN_SEQUENCE)
+        if (lexeme_courant().nature == FIN_SEQUENCE || lexeme_courant().nature == ELSE || lexeme_courant().nature == FI)
         {
             *A = *A1;
             break;
@@ -155,6 +154,7 @@ void rec_suite_seq_inst(Ast *A1, Ast *A)
 void rec_inst(Ast *A)
 {
     Ast Ag, Ad;
+    Ast Acond, Athen, Aelse;
     switch (lexeme_courant().nature)
     {
     case IDF:
@@ -172,10 +172,10 @@ void rec_inst(Ast *A)
         rec_eag(&Ad);
         *A = creer_aff(Ag, Ad);
         break;
-
-    case LIRE:
+    case IF:
         avancer();
-        if (lexeme_courant().nature == PARO)
+        rec_condition(&Acond);
+        if (lexeme_courant().nature == THEN)
         {
             avancer();
         }
@@ -184,9 +184,9 @@ void rec_inst(Ast *A)
             printf("Erreur syntaxique 5 \n");
             exit(0);
         }
-        if (lexeme_courant().nature == IDF)
+        rec_seq_inst(&Athen);
+        if (lexeme_courant().nature == ELSE)
         {
-            Ag = creer_idf(lexeme_courant().chaine);
             avancer();
         }
         else
@@ -194,8 +194,9 @@ void rec_inst(Ast *A)
             printf("Erreur syntaxique 6 \n");
             exit(0);
         }
-        *A = creer_lire(Ag);
-        if (lexeme_courant().nature == PARF)
+        rec_seq_inst(&Aelse);
+        *A = creer_if(Acond, Athen, Aelse);
+        if (lexeme_courant().nature == FI)
         {
             avancer();
         }
@@ -205,7 +206,7 @@ void rec_inst(Ast *A)
             exit(0);
         }
         break;
-        case ECRIRE:
+    case LIRE:
         avancer();
         if (lexeme_courant().nature == PARO)
         {
@@ -216,8 +217,17 @@ void rec_inst(Ast *A)
             printf("Erreur syntaxique 8 \n");
             exit(0);
         }
-        rec_eag(&Ag);
-        *A = creer_ecrire(Ag);
+        if (lexeme_courant().nature == IDF)
+        {
+            Ag = creer_idf(lexeme_courant().chaine);
+            avancer();
+        }
+        else
+        {
+            printf("Erreur syntaxique 9 \n");
+            exit(0);
+        }
+        *A = creer_lire(Ag);
         if (lexeme_courant().nature == PARF)
         {
             avancer();
@@ -228,8 +238,66 @@ void rec_inst(Ast *A)
             exit(0);
         }
         break;
+    case ECRIRE:
+        avancer();
+        if (lexeme_courant().nature == PARO)
+        {
+            avancer();
+        }
+        else
+        {
+            printf("Erreur syntaxique 11 \n");
+            exit(0);
+        }
+        rec_eag(&Ag);
+        *A = creer_ecrire(Ag);
+        if (lexeme_courant().nature == PARF)
+        {
+            avancer();
+        }
+        else
+        {
+            printf("Erreur syntaxique 12 \n");
+            exit(0);
+        }
+        break;
     default:
-        printf("Erreur syntaxique 11 \n");
+        printf("Erreur syntaxique 13 \n");
+        exit(0);
+    }
+}
+
+void rec_condition(Ast *A){
+    Ast Ag, Ad;
+    TypeOperateur op;
+    rec_eag(&Ag);
+    if(lexeme_courant().nature == OPCOMP){
+        operationIf(&op);
+        avancer();
+    }else{
+        printf("Erreur syntaxique 14 \n");
+        exit(0);
+    }
+    rec_eag(&Ad);
+    *A = creer_operation(op, Ag, Ad);
+}
+
+void operationIf(TypeOperateur *Op){
+    printf("CHAINE : %s", lexeme_courant().chaine);
+    if(strcmp(lexeme_courant().chaine, "<") == 0){
+        *Op = N_INF;
+    }else if(strcmp(lexeme_courant().chaine, ">") == 0){
+        *Op = N_SUP;
+    }else if(strcmp(lexeme_courant().chaine, "<=") == 0){
+        *Op = N_INFEGAL;
+    }else if(strcmp(lexeme_courant().chaine, ">=") == 0){
+        *Op = N_SUPEGAL;
+    }else if(strcmp(lexeme_courant().chaine, "==") == 0){
+        *Op = N_EGAL;
+    }else if(strcmp(lexeme_courant().chaine, "!=") == 0){
+        *Op = N_DIFF;
+    }else{
+        printf("Erreur syntaxique 14 \n");
         exit(0);
     }
 }
@@ -247,7 +315,7 @@ void op1(TypeOperateur *Op)
         avancer();
         break;
     default:
-        printf("Erreur syntaxique 12 \n");
+        printf("Erreur syntaxique 15 \n");
         break;
     }
 }
@@ -266,7 +334,7 @@ void op2(TypeOperateur *Op)
         break;
     default:
         break;
-        printf("Erreur syntaxique 13 \n");
+        printf("Erreur syntaxique 16 \n");
     }
 }
 
@@ -287,7 +355,7 @@ char rec_op()
         avancer();
         return '/';
     default:
-        printf("Erreur syntaxique 14\n");
+        printf("Erreur syntaxique 17\n");
         exit(0);
     }
 }
