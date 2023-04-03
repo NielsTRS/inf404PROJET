@@ -20,8 +20,12 @@
 #include "lecture_caracteres.h"
 #include "analyse_lexicale.h"
 
-#define NB_MOTCLE 2
-char motCle[2][20] = {"lire", "ecrire"};
+#define NB_MOTCLE 6
+char motCle[6][20] = {"lire", "ecrire", "if", "then", "else", "fi"};
+
+#define NB_OPCOMP 6
+char opComp[6][5] = {"==", ">", "<", "!=", "<=", ">="};
+char opBool[3][5] = {"et", "ou", "non"};
 
 /* --------------------------------------------------------------------- */
 
@@ -103,7 +107,6 @@ void reconnaitre_lexeme() {
 
         switch (etat) {
             printf("%c", caractere_courant());
-            printf("helllllllllo");
             case E_INIT: // etat initial
 
                 switch (nature_caractere(caractere_courant())) {
@@ -162,13 +165,27 @@ void reconnaitre_lexeme() {
                                 etat = E_FIN;
                                 break;
                             case '=':
-                                lexeme_en_cours.nature = AFF;
-                                etat = E_FIN;
+                                avancer_car();
+                                if(caractere_courant() == '='){
+                                    lexeme_en_cours.nature = OPCOMP;
+                                    ajouter_caractere(lexeme_en_cours.chaine, caractere_courant());
+                                    etat = E_FIN;
+                                }else{
+                                    lexeme_en_cours.nature = AFF;
+                                    etat = E_FIN;
+                                }
                                 break;
                             case ';':
                                 lexeme_en_cours.nature = SEPAFF;
                                 etat = E_FIN;
                                 break;
+                            case '<':
+                            case '>':
+                            case '!':
+                                lexeme_en_cours.nature = OPCOMP;
+                                etat = E_LETTRE;
+                                break;
+                            
                             default:
                                 printf("Erreur_Lexicale");
                                 exit(0);
@@ -211,6 +228,46 @@ void reconnaitre_lexeme() {
                                     break;
                                 case 1:
                                     lexeme_en_cours.nature = ECRIRE;
+                                    break;
+                                case 2:
+                                    lexeme_en_cours.nature = IF;
+                                    break;
+                                case 3:
+                                    lexeme_en_cours.nature = THEN;
+                                    break;
+                                case 4:
+                                    lexeme_en_cours.nature = ELSE;
+                                    break;
+                                case 5:
+                                    lexeme_en_cours.nature = FI;
+                                    break;
+                                default:
+                                    break;
+                                }
+                            }
+                        }
+
+                         for(int i = 0; i < NB_OPCOMP; i++){
+                            if(strcmp(lexeme_en_cours.chaine, opComp[i]) == 0){
+                                switch (i)
+                                {
+                                case 0:
+                                    lexeme_en_cours.nature = OPCOMP;
+                                    break;
+                                case 1:
+                                    lexeme_en_cours.nature = OPCOMP;
+                                    break;
+                                case 2:
+                                    lexeme_en_cours.nature = OPCOMP;
+                                    break;
+                                case 3:
+                                    lexeme_en_cours.nature = OPCOMP;
+                                    break;
+                                case 4:
+                                    lexeme_en_cours.nature = OPCOMP;
+                                    break;
+                                case 5:
+                                    lexeme_en_cours.nature = OPCOMP;
                                     break;
                                 default:
                                     break;
@@ -284,6 +341,9 @@ int est_symbole(char c) {
         case ')':
         case '=':
         case ';':
+        case '<':
+        case '>':
+        case '!':
             return 1;
 
         default:
@@ -322,6 +382,16 @@ char *Nature_vers_Chaine(Nature_Lexeme nature) {
             return "LIRE";
         case ECRIRE:
             return "ECRIRE";
+        case IF:
+            return "IF";
+        case THEN:
+            return "THEN";
+        case ELSE:
+            return "ELSE";
+        case FI:
+            return "FI";
+        case OPCOMP:
+            return "OPCOMP";
         default:
             return "ERREUR";
     };

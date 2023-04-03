@@ -32,7 +32,12 @@
       TEST,
       // mots clés du language
       ECRIRE,           // ecrire
-      LIRE              // lire
+      LIRE,              // lire
+      IF, 
+      THEN,
+      ELSE,
+      FI,
+      OPCOMP
     } Nature_Lexeme ;
 
 
