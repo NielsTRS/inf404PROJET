@@ -39,6 +39,9 @@
       FI,
       OPCOMP,
       OPBOOL,
+      WHILE,
+      DO,
+      DONE,
     } Nature_Lexeme ;
 
 

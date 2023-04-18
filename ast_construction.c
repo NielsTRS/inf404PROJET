@@ -90,3 +90,11 @@ Ast creer_if(Ast A1, Ast A2, Ast A3){
       return expr;
 }
 
+Ast creer_while(Ast A1, Ast A2){
+      Ast expr;
+      expr = (Ast) malloc (sizeof(NoeudAst));
+      expr->nature = N_WHILE;
+      expr->gauche = A1;
+      expr->droite = A2;
+      return expr;
+}

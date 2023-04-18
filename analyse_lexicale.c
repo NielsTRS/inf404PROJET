@@ -20,11 +20,11 @@
 #include "lecture_caracteres.h"
 #include "analyse_lexicale.h"
 
-#define NB_MOTCLE 6
-char motCle[6][20] = {"lire", "ecrire", "if", "then", "else", "fi"};
+#define NB_MOTCLE 9
+char motCle[NB_MOTCLE][20] = {"lire", "ecrire", "if", "then", "else", "fi", "while", "do", "done"};
 
 #define NB_OPCOMP 6
-char opComp[6][5] = {"==", ">", "<", "!=", "<=", ">="};
+char opComp[NB_OPCOMP][5] = {"==", ">", "<", "!=", "<=", ">="};
 char opBool[3][5] = {"et", "ou", "non"};
 
 /* --------------------------------------------------------------------- */
@@ -304,6 +304,15 @@ void reconnaitre_lexeme()
                         case 5:
                             lexeme_en_cours.nature = FI;
                             break;
+                        case 6:
+                            lexeme_en_cours.nature = WHILE;
+                            break;
+                        case 7:
+                            lexeme_en_cours.nature = DO;
+                            break;
+                        case 8:
+                            lexeme_en_cours.nature = DONE;
+                            break;
                         default:
                             break;
                         }
@@ -469,6 +478,12 @@ char *Nature_vers_Chaine(Nature_Lexeme nature)
         return "ELSE";
     case FI:
         return "FI";
+    case DO:
+        return "DO";
+    case WHILE:
+        return "WHILE";
+    case DONE:
+        return "DONE";
     case OPCOMP:
         return "OPCOMP";
     case OPBOOL:

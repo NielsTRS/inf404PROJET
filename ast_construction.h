@@ -26,4 +26,6 @@ Ast creer_ecrire(Ast A1);
 
 Ast creer_if(Ast A1, Ast A2, Ast A3);
 
+Ast creer_while(Ast A1, Ast A2);
+
 #endif

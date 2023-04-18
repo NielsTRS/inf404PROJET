@@ -17,6 +17,7 @@ typedef enum
 	N_SUB,
 	N_IF,
 	N_BOOL,
+	N_WHILE,
 } TypeAst;
 typedef enum
 {

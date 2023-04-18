@@ -83,6 +83,27 @@ void afficherArbre(Ast expr)
 		}
 		printf(")");
 		break;
+	case N_WHILE:
+		printf("WHILE(");
+		if (expr->gauche != NULL)
+		{
+			afficherArbre(expr->gauche);
+		}
+		else
+		{
+			printf("souci while gauche");
+		}
+		printf(",");
+		if (expr->droite != NULL)
+		{
+			afficherArbre(expr->droite);
+		}
+		else
+		{
+			printf("souci while droite");
+		}
+		printf(")");
+		break;
 	case OPERATION:
 		printf("(");
 		afficherArbre(expr->gauche);
@@ -267,6 +288,12 @@ void interpreter(Ast A)
 			interpreter(A->milieu);
 		}
 		else
+		{
+			interpreter(A->droite);
+		}
+		break;
+	case N_WHILE:
+		while (evaluation(A->gauche))
 		{
 			interpreter(A->droite);
 		}
