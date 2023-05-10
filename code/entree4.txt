@@ -1,6 +1,6 @@
-x = 5;
-y = 5;
-if x <= 10 && 2 == 1 then
+lire(x);
+lire(y);
+if x <= 10 && y <= 2 then
     x = x + 1;
 else
     y = y + 1;

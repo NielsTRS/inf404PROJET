@@ -1,0 +1,7 @@
+lire(x);
+y = 5;
+if x <= 10 then
+    x = x + 1;
+else
+    y = y + 1;
+fi;

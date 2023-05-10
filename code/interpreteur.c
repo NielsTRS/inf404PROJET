@@ -18,9 +18,10 @@ int main(int argc, char *argv[])
         analyser(argv[1], &arbre);
         printf("L'arbre est :");
         afficherArbre(arbre);
-        printf("\n");
+        printf("\n--------\n");
         initTS();
         interpreter(arbre);
+        printf("\nAffichage des variables : \n");
         afficheTS();
     }
     else

@@ -1,0 +1,3 @@
+lire (X);
+Y = X + 1;
+ecrire (Y * 2);

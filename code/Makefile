@@ -1,5 +1,5 @@
 
-all : test_lexeme calculette essai_ast 
+all : test_lexeme interpreteur essai_ast 
 
 
 ast_construction.o: ast_construction.c type_ast.h
@@ -14,8 +14,8 @@ essai_ast.o: essai_ast.c  ast_construction.h  ast_parcours.h  type_ast.h
 
 
 
-calculette.o: calculette.c analyse_syntaxique.h lecture_caracteres.h analyse_lexicale.h table.h
-	gcc -g -Wall -c calculette.c
+interpreteur.o: interpreteur.c analyse_syntaxique.h lecture_caracteres.h analyse_lexicale.h table.h
+	gcc -g -Wall -c interpreteur.c
 
 analyse_lexicale.o: analyse_lexicale.c analyse_lexicale.h lecture_caracteres.h
 	gcc -g -Wall -c analyse_lexicale.c
@@ -38,10 +38,10 @@ essai_ast: ast_construction.o  ast_parcours.o  essai_ast.o table.o
 test_lexeme: analyse_lexicale.o  lecture_caracteres.o  test_lexeme.o
 	gcc -g -Wall -o test_lexeme analyse_lexicale.o  lecture_caracteres.o  test_lexeme.o
 
-calculette: calculette.o analyse_syntaxique.o  ast_parcours.o ast_construction.o analyse_lexicale.o lecture_caracteres.o table.o
-	gcc -g -Wall -o calculette analyse_lexicale.o lecture_caracteres.o analyse_syntaxique.o calculette.o ast_parcours.o ast_construction.o table.o
+interpreteur: interpreteur.o analyse_syntaxique.o  ast_parcours.o ast_construction.o analyse_lexicale.o lecture_caracteres.o table.o
+	gcc -g -Wall -o interpreteur analyse_lexicale.o lecture_caracteres.o analyse_syntaxique.o interpreteur.o ast_parcours.o ast_construction.o table.o
 
 
 clean:
-	rm *.o essai_ast calculette test_lexeme
+	rm *.o essai_ast interpreteur test_lexeme
 

@@ -281,8 +281,6 @@ void rec_inst(Ast *A)
         *A = creer_while(Acond, Abody);
         break;
     default:
-        printf("Nature : %d \n", lexeme_courant().nature);
-        printf("Chaine : %s \n", lexeme_courant().chaine);
         printf("Erreur syntaxique 15 \n");
         exit(0);
     }
